@@ -141,4 +141,4 @@ dict['Rotten Tomatoes %'] = '92'
 dict['Worldwide Gross'] = '195.3'
 dict['Year'] = '2017'
 
-my_db.search('movies').insert_row
+my_db.search('movies').insert_row(dict)
