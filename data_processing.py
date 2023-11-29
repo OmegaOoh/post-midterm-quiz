@@ -3,6 +3,11 @@ import csv, os
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+movies = []
+with open(os.path.join(__location__, 'movies.csv')) as f:
+    rows = csv.DictReader(f)
+    for r in rows:
+        movies.append(dict(r))
 class DB:
     def __init__(self):
         self.database = []
@@ -97,6 +102,43 @@ class Table:
             pivot_table.append([item, aggregate_val_list])
         return pivot_table
 
+    def insert_row(self, dict):
+        if dict.keys() == self.table[0].keys():
+            self.table.append(dict)
+
+    def update_row(self, primary_attribute, primary_attribute_value, update_attribute, update_value):
+        target = {}
+        for i in self.table:
+            if i[primary_attribute] == primary_attribute_value:
+                target = i
+        target[update_attribute] = update_value
     def __str__(self):
         return self.table_name + ':' + str(self.table)
 
+
+my_db = DB()
+mov = Table('movies', movies)
+my_db.insert(mov)
+
+my_tab = my_db.search('movies')
+tab_fil = my_tab.filter(lambda x: x['Genre'] == 'Comedy')
+ls = my_tab.select('Worldwide Gross')
+ls = [float(i['Worldwide Gross']) for i in ls]
+print(sum(ls) / len(ls))
+
+tab_fil2 = my_tab.filter(lambda x: x['Genre'] == 'Drama')
+ls = my_tab.select('Audience score %')
+ls = [float(i['Audience score %']) for i in ls]
+print(min(ls))
+
+dict = {}
+dict['Film'] = 'The Shape of Water'
+dict['Genre'] = 'Fantasy'
+dict['Lead Studio'] = 'Fox'
+dict['Audience score %'] = '72'
+dict['Profitability'] = '9.765'
+dict['Rotten Tomatoes %'] = '92'
+dict['Worldwide Gross'] = '195.3'
+dict['Year'] = '2017'
+
+my_db.search('movies').insert_row
