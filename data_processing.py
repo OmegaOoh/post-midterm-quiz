@@ -141,4 +141,11 @@ dict['Rotten Tomatoes %'] = '92'
 dict['Worldwide Gross'] = '195.3'
 dict['Year'] = '2017'
 
+
+
+
+print(len(my_tab.filter(lambda x: x['Genre'] == 'Fantasy').select('Genre')))
+my_tab = my_db.search('movies')
 my_db.search('movies').insert_row(dict)
+ls = my_tab.filter(lambda x: x['Genre'] == 'Fantasy').select('Genre')
+print(len(ls))
